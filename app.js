@@ -11,7 +11,7 @@ var fs = require('fs'),
     mongoose = require('mongoose');
 
 var isProduction = process.env.NODE_ENV === 'production';
-
+    mongoose.Promise = global.Promise;
 // Create global app object
 var app = express();
 
