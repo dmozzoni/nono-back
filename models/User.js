@@ -43,7 +43,8 @@ UserSchema.methods.toAuthJSON = function(){
   return {
     username: this.username,
     email: this.email,
-    token: this.generateJWT()
+    token: this.generateJWT(),
+    image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'
   };
 };
 
