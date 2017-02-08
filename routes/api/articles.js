@@ -152,15 +152,14 @@ router.get('/:article', auth.optional, function(req, res, next) {
 
 // update article
 router.put('/:article', auth.required, function(req, res, next) {
-  // Promise.all([
-  //   req.payload ? User.findById(req.payload.id) : null,
-  //   req.article.populate('author').execPopulate()
-  // ]).then(function(results){
-  //   var user = results[0];
-  //
-  //   if(req.article.author._id.toString() === req.payload.id.toString()){
+  Promise.all([
+    req.payload ? User.findById(req.payload.id) : null,
+    req.article.populate('author').execPopulate()
+  ]).then(function(results){
+    var user = results[0];
 
-  if(req.article._id.toString() === req.payload.id.toString()){
+    if(req.article.author._id.toString() === req.payload.id.toString()){
+
     if(typeof req.body.article.title !== 'undefined'){
       req.article.title = req.body.article.title;
     }
@@ -173,6 +172,18 @@ router.put('/:article', auth.required, function(req, res, next) {
       req.article.body = req.body.article.body;
     }
 
+    if(typeof req.body.article.solutionWidth !== 'undefined'){
+      req.article.solutionWidth = req.body.article.solutionWidth;
+    }
+
+    if(typeof req.body.article.solutionHeight !== 'undefined'){
+      req.article.solutionHeight = req.body.article.solutionHeight;
+    }
+
+    if(typeof req.body.article.solution !== 'undefined'){
+      req.article.solution = req.body.article.solution;
+    }
+
     req.article.save().then(function(article){
       return res.json({article: article.toJSONFor(user)});
     }).catch(next);
@@ -180,12 +191,16 @@ router.put('/:article', auth.required, function(req, res, next) {
     return res.sendStatus(403);
   }
 });
-// });
+});
 
 // delete article
 router.delete('/:article', auth.required, function(req, res, next) {
-  User.findById(req.payload.id).then(function(){
-    if(req.article.author.toString() === req.payload.id.toString()){
+  Promise.all([
+    req.payload ? User.findById(req.payload.id) : null,
+    req.article.populate('author').execPopulate()
+  ]).then(function(results){
+    var user = results[0];
+    if(req.article.author._id.toString() === req.payload.id.toString()){
       return req.article.remove().then(function(){
         return res.sendStatus(204);
       });
