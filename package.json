@@ -1,7 +1,11 @@
 {
-  "name": "conduit-node",
+  "name": "nonogrid-back",
   "version": "1.0.0",
-  "description": "conduit on node",
+  "engines": {
+  "node": "7.4.0",
+  "npm": "4.0.5"
+},
+  "description": "backend for nonogrid",
   "main": "app.js",
   "scripts": {
     "start": "node ./app.js",
@@ -10,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gothinkster/productionready-node-api.git"
+    "url": "git+https://github.com/dmozzoni/nono-back.git"
   },
   "license": "ISC",
   "dependencies": {
