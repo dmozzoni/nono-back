@@ -11,11 +11,15 @@ var fs = require('fs'),
     mongoose = require('mongoose');
 
 var isProduction = process.env.NODE_ENV === 'production';
-    mongoose.Promise = global.Promise;
+
 // Create global app object
 var app = express();
 
+// USe cors
 app.use(cors());
+
+// Use global promise library instead of the deprecated one
+mongoose.Promise = global.Promise;
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));

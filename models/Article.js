@@ -11,8 +11,6 @@ var ArticleSchema = new mongoose.Schema({
   solution: [{ type: Number }],
   solutionWidth: {type: Number, default: 0},
   solutionHeight: {type: Number, default: 0},
-  solutionCols: [],
-  solutionRows: [],
   favoritesCount: {type: Number, default: 0},
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   tagList: [{ type: String }],
