@@ -41,6 +41,7 @@ UserSchema.methods.generateJWT = function() {
 UserSchema.methods.toAuthJSON = function(){
   return {
     username: this.username,
+    bio: this.bio,
     email: this.email,
     token: this.generateJWT(),
     image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'
@@ -59,7 +60,6 @@ UserSchema.methods.favorite = function(id){
   if(this.favorites.indexOf(id) === -1){
     this.favorites.push(id);
   }
-
   return this.save();
 };
 
