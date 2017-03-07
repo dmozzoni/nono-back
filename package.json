@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
   "node": "7.4.0",
-  "npm": "4.0.5"
+  "npm": "4.3.0"
 },
   "description": "backend for nonogrid",
   "main": "app.js",
@@ -18,23 +18,23 @@
   },
   "license": "ISC",
   "dependencies": {
-    "body-parser": "1.16.0",
+    "body-parser": "1.17.1",
     "cors": "2.8.1",
     "dotenv": "4.0.0",
-    "ejs": "2.5.5",
+    "ejs": "2.5.6",
     "errorhandler": "1.5.0",
-    "express": "4.14.1",
+    "express": "4.15.2",
     "express-jwt": "5.1.0",
-    "express-session": "1.15.0",
-    "jsonwebtoken": "7.2.1",
+    "express-session": "1.15.1",
+    "jsonwebtoken": "7.3.0",
     "method-override": "2.3.7",
     "methods": "1.1.2",
-    "mongoose": "4.8.1",
-    "mongoose-unique-validator": "1.0.3",
-    "morgan": "1.8.0",
+    "mongoose": "4.8.6",
+    "mongoose-unique-validator": "1.0.4",
+    "morgan": "1.8.1",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
-    "request": "2.79.0",
+    "request": "2.80.0",
     "slug": "0.9.1",
     "underscore": "1.8.3"
   }
