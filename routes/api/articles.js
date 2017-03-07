@@ -12,9 +12,7 @@ router.param('article', function(req, res, next, slug) {
     .populate('author')
     .then(function (article) {
       if (!article) { return res.sendStatus(404); }
-
       req.article = article;
-
       return next();
     }).catch(next);
 });
@@ -53,9 +51,7 @@ router.get('/', auth.optional, function(req, res, next) {
     var author = results[0];
     var favoriter = results[1];
 
-    if(author){
-      query.author = author._id;
-    }
+    if(author){ query.author = author._id; }
 
     if(favoriter){
       query._id = {$in: favoriter.favorites};
@@ -76,7 +72,6 @@ router.get('/', auth.optional, function(req, res, next) {
       var articles = results[0];
       var articlesCount = results[1];
       var user = results[2];
-
       return res.json({
         articles: articles.map(function(article){
           return article.toJSONFor(user);
@@ -90,11 +85,8 @@ router.get('/', auth.optional, function(req, res, next) {
 router.post('/', auth.required, function(req, res, next) {
   User.findById(req.payload.id).then(function(user){
     if (!user) { return res.sendStatus(401); }
-
     var article = new Article(req.body.article);
-
     article.author = user;
-
     return article.save().then(function(){
       console.log(article.author);
       return res.json({article: article.toJSONFor(user)});
@@ -109,61 +101,116 @@ router.get('/:article', auth.optional, function(req, res, next) {
     req.article.populate('author').execPopulate()
   ]).then(function(results){
     var user = results[0];
-
     return res.json({article: req.article.toJSONFor(user)});
   }).catch(next);
 });
 
-// update article
-router.put('/:article', auth.required, function(req, res, next) {
-  Promise.all([
-    req.payload ? User.findById(req.payload.id) : null,
-    req.article.populate('author').execPopulate()
-  ]).then(function(results){
-    var user = results[0];
 
+
+
+
+// update article
+
+router.put('/:article', auth.required, function(req, res, next) {
+  User.findById(req.payload.id).then(function(user){
     if(req.article.author._id.toString() === req.payload.id.toString()){
 
-    if(typeof req.body.article.title !== 'undefined'){
-      req.article.title = req.body.article.title;
-    }
+      if(typeof req.body.article.title !== 'undefined'){
+        req.article.title = req.body.article.title;
+      }
 
-    if(typeof req.body.article.description !== 'undefined'){
-      req.article.description = req.body.article.description;
-    }
+      if(typeof req.body.article.description !== 'undefined'){
+        req.article.description = req.body.article.description;
+      }
 
-    if(typeof req.body.article.body !== 'undefined'){
-      req.article.body = req.body.article.body;
-    }
+      if(typeof req.body.article.body !== 'undefined'){
+        req.article.body = req.body.article.body;
+      }
 
-    if(typeof req.body.article.solutionWidth !== 'undefined'){
-      req.article.solutionWidth = req.body.article.solutionWidth;
-    }
+      if(typeof req.body.article.solutionWidth !== 'undefined'){
+        req.article.solutionWidth = req.body.article.solutionWidth;
+      }
 
-    if(typeof req.body.article.solutionHeight !== 'undefined'){
-      req.article.solutionHeight = req.body.article.solutionHeight;
-    }
+      if(typeof req.body.article.solutionHeight !== 'undefined'){
+        req.article.solutionHeight = req.body.article.solutionHeight;
+      }
 
-    if(typeof req.body.article.solution !== 'undefined'){
-      req.article.solution = req.body.article.solution;
-    }
+      if(typeof req.body.article.solution !== 'undefined'){
+        req.article.solution = req.body.article.solution;
+      }
 
-    req.article.save().then(function(article){
-      return res.json({article: article.toJSONFor(user)});
-    }).catch(next);
-  } else {
-    return res.sendStatus(403);
-  }
+      req.article.save().then(function(article){
+        return res.json({article: article.toJSONFor(user)});
+      }).catch(next);
+    } else {
+      return res.sendStatus(403);
+    }
+  });
 });
-});
+
+
+
+
+
+// // update article
+// router.put('/:article', auth.required, function(req, res, next) {
+//
+//
+//
+//
+//
+//   Promise.all([
+//     req.payload ? User.findById(req.payload.id) : null,
+//     req.article.populate('author').execPopulate()
+//   ]).then(function(results){
+//     var user = results[0];
+//
+//     if(req.article.author._id.toString() === req.payload.id.toString()){
+//
+//     if(typeof req.body.article.title !== 'undefined'){
+//       req.article.title = req.body.article.title;
+//     }
+//
+//     if(typeof req.body.article.description !== 'undefined'){
+//       req.article.description = req.body.article.description;
+//     }
+//
+//     if(typeof req.body.article.body !== 'undefined'){
+//       req.article.body = req.body.article.body;
+//     }
+//
+//     if(typeof req.body.article.solutionWidth !== 'undefined'){
+//       req.article.solutionWidth = req.body.article.solutionWidth;
+//     }
+//
+//     if(typeof req.body.article.solutionHeight !== 'undefined'){
+//       req.article.solutionHeight = req.body.article.solutionHeight;
+//     }
+//
+//     if(typeof req.body.article.solution !== 'undefined'){
+//       req.article.solution = req.body.article.solution;
+//     }
+//
+//     req.article.save().then(function(article){
+//       return res.json({article: article.toJSONFor(user)});
+//     }).catch(next);
+//   } else {
+//     return res.sendStatus(403);
+//   }
+// });
+// });
+
+
+
+
+
+
 
 // delete article
+
 router.delete('/:article', auth.required, function(req, res, next) {
-  Promise.all([
-    req.payload ? User.findById(req.payload.id) : null,
-    req.article.populate('author').execPopulate()
-  ]).then(function(results){
-    var user = results[0];
+  User.findById(req.payload.id).then(function(user){
+    if (!user) { return res.sendStatus(401); }
     if(req.article.author._id.toString() === req.payload.id.toString()){
       return req.article.remove().then(function(){
         return res.sendStatus(204);
@@ -171,8 +218,28 @@ router.delete('/:article', auth.required, function(req, res, next) {
     } else {
       return res.sendStatus(403);
     }
-  });
+  }).catch(next);
 });
+
+
+
+
+// // delete article
+// router.delete('/:article', auth.required, function(req, res, next) {
+//   Promise.all([
+//     req.payload ? User.findById(req.payload.id) : null,
+//     req.article.populate('author').execPopulate()
+//   ]).then(function(results){
+//     var user = results[0];
+//     if(req.article.author._id.toString() === req.payload.id.toString()){
+//       return req.article.remove().then(function(){
+//         return res.sendStatus(204);
+//       });
+//     } else {
+//       return res.sendStatus(403);
+//     }
+//   });
+// });
 
 
 // Favorite an article

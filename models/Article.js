@@ -21,7 +21,6 @@ ArticleSchema.plugin(uniqueValidator, {message: 'is already taken'});
 
 ArticleSchema.pre('validate', function(next){
   this.slugify();
-
   next();
 });
 
@@ -31,10 +30,8 @@ ArticleSchema.methods.slugify = function() {
 
 ArticleSchema.methods.updateFavoriteCount = function() {
   var article = this;
-
   return User.count({favorites: {$in: [article._id]}}).then(function(count){
     article.favoritesCount = count;
-
     return article.save();
   });
 };
